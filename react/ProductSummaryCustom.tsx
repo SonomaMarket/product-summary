@@ -14,6 +14,8 @@ import type { CssHandlesTypes } from 'vtex.css-handles'
 import LocalProductSummaryContext from './ProductSummaryContext'
 import { mapCatalogProductToProductSummary } from './utils/normalize'
 import ProductPriceSimulationWrapper from './components/ProductPriceSimulationWrapper'
+//@ts-ignore
+import CustomProductSummaryComponent from './legacy/components/CustomProductSummaryComponent'
 
 const {
   ProductSummaryProvider,
@@ -29,6 +31,7 @@ const CSS_HANDLES = [
   'clearLink',
 ] as const
 
+//@ts-ignore
 function ProductSummaryCustom({
   product,
   actionOnClick,
@@ -170,7 +173,12 @@ function ProductSummaryCustom({
             ref={inViewRef}
           >
             <Link className={linkClasses} {...linkProps}>
-              <article className={summaryClasses}>{children}</article>
+              <CustomProductSummaryComponent
+                className={summaryClasses}
+                children={children}
+                product={product}
+                listName={listName}
+              />
             </Link>
           </section>
         </ProductPriceSimulationWrapper>
