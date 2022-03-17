@@ -1,7 +1,9 @@
 import React from 'react'
+//@ts-ignore
 import { ProductName } from 'vtex.store-components'
 import { useCssHandles } from 'vtex.css-handles'
 import type { CssHandlesTypes } from 'vtex.css-handles'
+//@ts-ignore
 import { ProductSummaryContext } from 'vtex.product-summary-context'
 
 const { useProductSummary } = ProductSummaryContext

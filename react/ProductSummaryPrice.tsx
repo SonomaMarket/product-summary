@@ -2,8 +2,11 @@ import React from 'react'
 import classNames from 'classnames'
 // eslint-disable-next-line no-restricted-imports
 import { pluck, path, flatten } from 'ramda'
+//@ts-ignore
 import { ProductPrice } from 'vtex.store-components'
+//@ts-ignore
 import { ProductSummaryContext } from 'vtex.product-summary-context'
+//@ts-ignore
 import type { ProductSummaryTypes } from 'vtex.product-summary-context'
 import { useCssHandles } from 'vtex.css-handles'
 import type { CssHandlesTypes } from 'vtex.css-handles'
@@ -45,9 +48,11 @@ function getPrices(
   }
 
   // No priceRange resolver provided, use sku information
+  //@ts-ignore
   const sellers = flatten(pluck('sellers', product.items))
   const offerAttribute = attribute === 'sellingPrice' ? 'Price' : 'ListPrice'
   const prices = sellers.map(path(['commertialOffer', offerAttribute]))
+  //@ts-ignore
   const availableProductsPrices = prices.filter((price) => price !== 0)
 
   return availableProductsPrices
