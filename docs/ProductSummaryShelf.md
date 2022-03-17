@@ -12,7 +12,7 @@ Product Summary Shelf is the main block exported by the Product Summary app. Thr
 
 ```json
   dependencies: {
-    "vtex.product-summary": "2.x"
+    "sonoma.product-summary": "2.x"
   }
 ```
 

@@ -16,7 +16,7 @@ Product Summary is an app responsible for summarizing product information (such 
 
 ```json
   "dependencies": {
-    "vtex.product-summary": "2.x"
+    "sonoma.product-summary": "2.x"
   }
 ```
 

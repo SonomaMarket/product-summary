@@ -15,6 +15,7 @@ import displayButtonTypes, {
   getDisplayButtonValues,
 } from '../utils/displayButtonTypes'
 import { productShape } from '../utils/propTypes'
+import CustomProductSummaryComponent from './components/CustomProductSummaryComponent'
 
 const DISPLAY_MODE_MAP = {
   normal: ProductSummaryNormal,
@@ -194,7 +195,7 @@ class ProductSummary extends Component {
       DISPLAY_MODE_MAP[displayMode] || ProductSummaryNormal
 
     return (
-      <ProductSummaryComponent
+      <CustomProductSummaryComponent
         product={product}
         showBorders={showBorders}
         showDescription={showDescription}

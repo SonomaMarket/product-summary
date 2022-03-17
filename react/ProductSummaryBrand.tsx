@@ -1,5 +1,7 @@
 import React from 'react'
+//@ts-ignore
 import { ProductBrand } from 'vtex.store-components'
+//@ts-ignore
 import { ProductSummaryContext } from 'vtex.product-summary-context'
 
 const { useProductSummary } = ProductSummaryContext

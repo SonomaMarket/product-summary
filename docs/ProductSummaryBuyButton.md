@@ -10,11 +10,11 @@ Product Summary Buy Button is a block exported by the Product Summary app respon
 
 ## Configuration
 
-1. Add the [Product Summary app](https://vtex.io/docs/components/content-blocks/vtex.product-summary/) to your theme's dependencies on the `manifest.json`, for example:
+1. Add the [Product Summary app](https://vtex.io/docs/components/content-blocks/sonoma.product-summary/) to your theme's dependencies on the `manifest.json`, for example:
 
 ```json
   dependencies: {
-    "vtex.product-summary": "2.x"
+    "sonoma.product-summary": "0.x"
   }
 ```
 

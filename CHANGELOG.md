@@ -521,7 +521,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Use `vtex.product-summary-context` instead of local context.
+- Use `sonoma.product-summary-context` instead of local context.
 
 ### Added
 
