@@ -23,27 +23,28 @@ export default function CustomProductSummaryComponent({
             <figure className={styles.thumbnail} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
                 <div className={styles["sonoma-image"]} itemProp="image">
                     <Link
+                        area-label="Comprar"
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
                             id: product && product.productId,
                             __listName: listName,
                         }}
-                        to={product.link} itemProp="url"
+                        to={`/${product.linkText}/p`} itemProp="url"
                     >
                         <picture style={isHover ? { display: 'none' } : {}}>
-                            <source media="(max-width: 320px)" srcSet={resizeImg(product, 128, false)} />
-                            <source media="(max-width: 425px)" srcSet={resizeImg(product, 150, false)} />
-                            <source media="(max-width: 425px)" srcSet={resizeImg(product, 170, false)} />
-                            <source media="(min-width: 1000px)" srcSet={resizeImg(product, 236, false)} />
-                            <img itemProp="image" src={resizeImg(product, 236, false)} />
+                            <source media="(max-width: 320px)" width="128" height="128" srcSet={resizeImg(product, 128, false)} />
+                            <source media="(max-width: 425px)" width="150" height="150" srcSet={resizeImg(product, 150, false)} />
+                            <source media="(max-width: 425px)" width="170" height="170" srcSet={resizeImg(product, 170, false)} />
+                            <source media="(min-width: 1000px)" width="236" height="236" srcSet={resizeImg(product, 236, false)} />
+                            <img loading="lazy" itemProp="image" width="236" height="236" src={resizeImg(product, 236, false)} alt={product.productName} />
                         </picture>
                         <picture style={!isHover ? { display: 'none' } : {}}>
-                            <source media="(max-width: 320px)" srcSet={resizeImg(product, 128, true)} />
-                            <source media="(max-width: 425px)" srcSet={resizeImg(product, 150, true)} />
-                            <source media="(max-width: 425px)" srcSet={resizeImg(product, 170, true)} />
-                            <source media="(min-width: 1000px)" srcSet={resizeImg(product, 236, true)} />
-                            <img itemProp="image" src={resizeImg(product, 236, true)} />
+                            <source media="(max-width: 320px)" width="128" height="128" srcSet={resizeImg(product, 128, true)} />
+                            <source media="(max-width: 425px)" width="150" height="150" srcSet={resizeImg(product, 150, true)} />
+                            <source media="(max-width: 425px)" width="170" height="170" srcSet={resizeImg(product, 170, true)} />
+                            <source media="(min-width: 1000px)" width="236" height="236" srcSet={resizeImg(product, 236, true)} />
+                            <img loading="lazy" itemProp="image" width="236" height="236" src={resizeImg(product, 236, true)} alt={product.productName} />
                         </picture>
                     </Link>
                 </div>
@@ -53,13 +54,14 @@ export default function CustomProductSummaryComponent({
                 </div>
                 <div className={styles["location-container"]}>
                     <Link
+                        area-label="Comprar"
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
                             id: product && product.productId,
                             __listName: listName,
                         }}
-                        to={product.link}
+                        to={`/${product.linkText}/p`}
                     >
                         <p className={styles["sonoma-paragraph-location"]} itemProp="location">
                             {`${getRegion(product)} ${getCountry(product)}`}
@@ -68,101 +70,111 @@ export default function CustomProductSummaryComponent({
                 </div>
                 <h1 className={styles["sonoma-title"]} itemProp="name">
                     <Link
+                        area-label="Comprar"
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
                             id: product && product.productId,
                             __listName: listName,
                         }}
-                        to={product.link}
+                        to={`/${product.linkText}/p`}
                     >
                         <span className={styles["formatted-text"]}>
                             {product.productName}
                         </span>
                     </Link>
                 </h1>
-                <div itemProp="offers" itemScope="itemScope" itemType="http://schema.org/AggregateOffer" className={styles["prices"]}>
-                    <meta itemProp="availability" content="https://schema.org/InStock" />
-                    <meta itemProp="priceCurrency" content="BRL" />
-                    <meta itemProp="highPrice" content="156" />
-                    <meta itemProp="lowPrice" content="79.9" />
-                    <div className={styles["offer-container"]}>
-                        <div className={styles["oldprice-container"]}>
-                            <Link
-                                page="store.product"
-                                params={{
-                                    slug: product && product.linkText,
-                                    id: product && product.productId,
-                                    __listName: listName,
-                                }}
-                                to={product.link}
-                                className={styles.oldprice}
-                            >
-                                De
-                                <span className={styles["sonoma-currency"]}>
-                                    {formatCurrency(product.priceRange.listPrice.lowPrice)}
-                                </span>
-                                por
-                            </Link>
+
+                {
+                    product.sku.seller.commertialOffer.AvailableQuantity ? <>
+                        <div itemProp="offers" itemScope="itemScope" itemType="http://schema.org/AggregateOffer" className={styles["prices"]}>
+                            <meta itemProp="availability" content="https://schema.org/InStock" />
+                            <meta itemProp="priceCurrency" content="BRL" />
+                            <meta itemProp="highPrice" content="156" />
+                            <meta itemProp="lowPrice" content="79.9" />
+                            <div className={styles["offer-container"]}>
+                                <div className={styles["oldprice-container"]}>
+                                    <Link
+                                        area-label="Comprar"
+                                        page="store.product"
+                                        params={{
+                                            slug: product && product.linkText,
+                                            id: product && product.productId,
+                                            __listName: listName,
+                                        }}
+                                        to={`/${product.linkText}/p`}
+                                        className={styles.oldprice}
+                                    >
+                                        De
+                                        <span className={styles["sonoma-currency"]}>
+                                            {formatCurrency(product.priceRange.listPrice.lowPrice)}
+                                        </span>
+                                        por
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className={styles["price-container"]}>
+                                <div className={styles["price-container-box"]}>
+                                    <Link
+                                        area-label="Comprar"
+                                        page="store.product"
+                                        params={{
+                                            slug: product && product.linkText,
+                                            id: product && product.productId,
+                                            __listName: listName,
+                                        }}
+                                        to={`/${product.linkText}/p`}
+                                        className={styles["price-box"]}
+                                    >
+                                        <span className={styles["sonoma-currency"]}>
+                                            {formatCurrency(getBoxPrice(product))}
+                                        </span>
+                                        <span className={styles["price-unity"]}>
+                                            {getBoxPrice(product) && "Na caixa ou"}
+                                        </span>
+                                    </Link>
+                                </div>
+                                <div className={styles["price-container-unity"]}>
+                                    <Link
+                                        area-label="Comprar"
+                                        page="store.product"
+                                        params={{
+                                            slug: product && product.linkText,
+                                            id: product && product.productId,
+                                            __listName: listName,
+                                        }}
+                                        to={`/${product.linkText}/p`}
+                                        className={styles["price"]}
+                                    >
+                                        <span className={styles["sonoma-currency"]}>
+                                            {formatCurrency(product.priceRange.sellingPrice.lowPrice)}
+                                        </span>
+                                        <span className={styles["price-unity"]}>
+                                            Unidade
+                                        </span>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className={styles["price-container"]}>
-                        <div className={styles["price-container-box"]}>
+                        <div className={styles["actions"]}>
                             <Link
+                                area-label="Comprar"
                                 page="store.product"
                                 params={{
                                     slug: product && product.linkText,
                                     id: product && product.productId,
                                     __listName: listName,
                                 }}
-                                to={product.link}
-                                className={styles["price-box"]}
-                            >
-                                <span className={styles["sonoma-currency"]}>
-                                    {formatCurrency(getBoxPrice(product))}
-                                </span>
-                                <span className={styles["price-unity"]}>
-                                    {getBoxPrice(product) && "Na caixa ou"}
-                                </span>
-                            </Link>
-                        </div>
-                        <div className={styles["price-container-unity"]}>
-                            <Link
-                                page="store.product"
-                                params={{
-                                    slug: product && product.linkText,
-                                    id: product && product.productId,
-                                    __listName: listName,
-                                }}
-                                to={product.link}
+                                to={`/${product.linkText}/p`}
                                 className={styles["price"]}
                             >
-                                <span className={styles["sonoma-currency"]}>
-                                    {formatCurrency(product.priceRange.sellingPrice.lowPrice)}
-                                </span>
-                                <span className={styles["price-unity"]}>
-                                    Unidade
-                                </span>
+                                <button className={styles["sonoma-button-buy"]}>
+                                    Comprar
+                                </button>
                             </Link>
                         </div>
-                    </div>
-                </div>
-                <div className={styles["actions"]}>
-                    <Link
-                        page="store.product"
-                        params={{
-                            slug: product && product.linkText,
-                            id: product && product.productId,
-                            __listName: listName,
-                        }}
-                        to={product.link}
-                        className={styles["price"]}
-                    >
-                        <button className={styles["sonoma-button-buy"]}>
-                            Comprar
-                        </button>
-                    </Link>
-                </div>
+                    </> : <p class={styles.shelf__indisponivel}>Esgotado</p>
+                }
             </div>
         </div>
     )
