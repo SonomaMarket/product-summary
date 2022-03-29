@@ -21,6 +21,9 @@ export default function CustomProductSummaryComponent({
             <meta itemProp="sku" content={product.sku.itemId} />
             <meta itemProp="description" />
             <figure className={styles.thumbnail} onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+                <div className={styles.flags}>
+                    {getSeals(product)}
+                </div>
                 <div className={styles["sonoma-image"]} itemProp="image">
                     <Link
                         area-label="Comprar"
@@ -68,7 +71,7 @@ export default function CustomProductSummaryComponent({
                         </p>
                     </Link>
                 </div>
-                <h1 className={styles["sonoma-title"]} itemProp="name">
+                <h3 className={styles["sonoma-title"]} itemProp="name">
                     <Link
                         area-label="Comprar"
                         page="store.product"
@@ -83,7 +86,7 @@ export default function CustomProductSummaryComponent({
                             {product.productName}
                         </span>
                     </Link>
-                </h1>
+                </h3>
 
                 {
                     product.sku.seller.commertialOffer.AvailableQuantity ? <>
@@ -214,4 +217,53 @@ function resizeImg(product, desiredSize, isHover) {
     const imgUrlArray = product.sku.images[imgIndex].imageUrl.split("-")
     const resizedImgUrl = `${imgUrlArray[0]}-${desiredSize}-${desiredSize}`
     return resizedImgUrl
+}
+
+const premiacoesSRC = {
+    bestSellers: "sprites-best-seller",
+    organico: "sprites-organico",
+    natural: "sprites-natural",
+    Pontuação: "sprites-medal"
+};
+
+function getSeals(product) {
+    const seals = product.specificationGroups.filter(property => property.name === "Selos")
+    const ratings = product.specificationGroups.filter(property => property.name === "Pontuação")
+
+    if(!seals.length && !ratings.length)
+        return;
+
+    return (
+        <>
+            {seals.map(seal => _mountSeal(seal))}
+            {ratings.map(rating => _mountSeal(rating))}
+        </>
+    )
+}
+
+function _mountSeal(seal) {
+    return seal.specifications.map(seal => {
+        if(!premiacoesSRC[seal.name] && seal.name.length !== 2)
+            return null;
+
+        return (   
+        <figure className={styles.seals__item} key={seal.name}>
+                <i
+                  className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${
+                    seal.name.length !== 2
+                      ? premiacoesSRC[seal.name]
+                      : premiacoesSRC["Pontuação"]
+                  }`}
+                />
+                <figcaption className={styles.seals__caption}>
+                  <p className={styles.seals__points}>
+                    {seal.values?.[0] !== "Ativo" && seal.values[0]}
+                  </p>
+                  <p className={styles.seals__avaliator}>
+                    {seal.values?.[0] !== "Ativo" && seal.name}
+                  </p>
+                </figcaption>
+        </figure>
+        )
+    })
 }
