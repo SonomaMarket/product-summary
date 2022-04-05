@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'vtex.render-runtime'
 import styles from '../styles/custom-product-summary-component'
 
-export default function CustomProductSummaryComponent({
+function CustomProductSummaryComponent({
     product,
     handleMouseEnter,
     handleMouseLeave,
@@ -26,7 +26,6 @@ export default function CustomProductSummaryComponent({
                 </div>
                 <div className={styles["sonoma-image"]} itemProp="image">
                     <Link
-                        area-label="Comprar"
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
@@ -57,7 +56,8 @@ export default function CustomProductSummaryComponent({
                 </div>
                 <div className={styles["location-container"]}>
                     <Link
-                        area-label="Comprar"
+                        title={product.productName}
+                        aria-label={product.productName}
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
@@ -73,7 +73,6 @@ export default function CustomProductSummaryComponent({
                 </div>
                 <h3 className={styles["sonoma-title"]} itemProp="name">
                     <Link
-                        area-label="Comprar"
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
@@ -96,30 +95,30 @@ export default function CustomProductSummaryComponent({
                             <meta itemProp="highPrice" content="156" />
                             <meta itemProp="lowPrice" content="79.9" />
                             <div className={styles["offer-container"]}>
-                                <div className={styles["oldprice-container"]}>
-                                    <Link
-                                        area-label="Comprar"
-                                        page="store.product"
-                                        params={{
-                                            slug: product && product.linkText,
-                                            id: product && product.productId,
-                                            __listName: listName,
-                                        }}
-                                        to={`/${product.linkText}/p`}
-                                        className={styles.oldprice}
-                                    >
-                                        De
-                                        <span className={styles["sonoma-currency"]}>
-                                            {formatCurrency(product.priceRange.listPrice.lowPrice)}
-                                        </span>
-                                        por
-                                    </Link>
+                                    <div className={`${styles["oldprice-container"]} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
+                                        <Link
+                                            page="store.product"
+                                            params={{
+                                                slug: product && product.linkText,
+                                                id: product && product.productId,
+                                                __listName: listName,
+                                            }}
+                                            to={`/${product.linkText}/p`}
+                                            className={styles.oldprice}
+                                        >
+                                            De
+                                            <span className={styles["sonoma-currency"]}>
+                                                {formatCurrency(product.priceRange.listPrice.lowPrice)}
+                                            </span>
+                                            por
+                                        </Link>
+                                    </div>
                                 </div>
-                            </div>
                             <div className={styles["price-container"]}>
                                 <div className={styles["price-container-box"]}>
                                     <Link
-                                        area-label="Comprar"
+                                        title={product.productName}
+                                        aria-label={product.productName}
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
@@ -139,7 +138,6 @@ export default function CustomProductSummaryComponent({
                                 </div>
                                 <div className={styles["price-container-unity"]}>
                                     <Link
-                                        area-label="Comprar"
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
@@ -161,7 +159,6 @@ export default function CustomProductSummaryComponent({
                         </div>
                         <div className={styles["actions"]}>
                             <Link
-                                area-label="Comprar"
                                 page="store.product"
                                 params={{
                                     slug: product && product.linkText,
@@ -230,7 +227,7 @@ function getSeals(product) {
     const seals = product.specificationGroups.filter(property => property.name === "Selos")
     const ratings = product.specificationGroups.filter(property => property.name === "Pontuação")
 
-    if(!seals.length && !ratings.length)
+    if (!seals.length && !ratings.length)
         return;
 
     return (
@@ -241,29 +238,34 @@ function getSeals(product) {
     )
 }
 
+function doesProductHaveDiscount(product) {
+    return (product.priceRange.listPrice.lowPrice > product.priceRange.sellingPrice.lowPrice)
+}
+
 function _mountSeal(seal) {
     return seal.specifications.map(seal => {
-        if(!premiacoesSRC[seal.name] && seal.name.length !== 2)
+        if (!premiacoesSRC[seal.name] && seal.name.length !== 2)
             return null;
 
-        return (   
-        <figure className={styles.seals__item} key={seal.name}>
+        return (
+            <figure className={styles.seals__item} key={seal.name}>
                 <i
-                  className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${
-                    seal.name.length !== 2
-                      ? premiacoesSRC[seal.name]
-                      : premiacoesSRC["Pontuação"]
-                  }`}
+                    className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${seal.name.length !== 2
+                        ? premiacoesSRC[seal.name]
+                        : premiacoesSRC["Pontuação"]
+                        }`}
                 />
                 <figcaption className={styles.seals__caption}>
-                  <p className={styles.seals__points}>
-                    {seal.values?.[0] !== "Ativo" && seal.values[0]}
-                  </p>
-                  <p className={styles.seals__avaliator}>
-                    {seal.values?.[0] !== "Ativo" && seal.name}
-                  </p>
+                    <p className={styles.seals__points}>
+                        {seal.values?.[0] !== "Ativo" && seal.values[0]}
+                    </p>
+                    <p className={styles.seals__avaliator}>
+                        {seal.values?.[0] !== "Ativo" && seal.name}
+                    </p>
                 </figcaption>
-        </figure>
+            </figure>
         )
     })
 }
+
+export default React.memo(CustomProductSummaryComponent)
