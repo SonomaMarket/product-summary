@@ -24,6 +24,9 @@ function CustomProductSummaryComponent({
                 <div className={styles.flags}>
                     {getSeals(product)}
                 </div>
+                <div className={styles.preSaleFlag} hidden={!getIsPreSale(product)}>
+                    PRÉ-VENDA
+                </div>
                 <div className={styles["sonoma-image"]} itemProp="image">
                     <Link
                         page="store.product"
@@ -240,6 +243,10 @@ function getSeals(product) {
 
 function doesProductHaveDiscount(product) {
     return (product.priceRange.listPrice.lowPrice > product.priceRange.sellingPrice.lowPrice)
+}
+
+function getIsPreSale(product) {
+    return product.properties?.filter(property => property.name === "Pré-venda")?.[0]?.values?.[0] === "Ativo"
 }
 
 function _mountSeal(seal) {
