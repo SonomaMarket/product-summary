@@ -8,6 +8,7 @@ function CustomProductSummaryComponent({
     handleMouseLeave,
     inViewRef,
     listName,
+    isSearchPage
 }) {
     const [isHover, setIsHover] = useState(false);
 
@@ -74,21 +75,17 @@ function CustomProductSummaryComponent({
                         </p>
                     </Link>
                 </div>
-                <h3 className={styles["sonoma-title"]} itemProp="name">
-                    <Link
-                        page="store.product"
-                        params={{
-                            slug: product && product.linkText,
-                            id: product && product.productId,
-                            __listName: listName,
-                        }}
-                        to={`/${product.linkText}/p`}
-                    >
-                        <span className={styles["formatted-text"]}>
-                            {product.productName}
-                        </span>
-                    </Link>
-                </h3>
+
+                {isSearchPage ?
+                    <h2 className={styles["sonoma-title"]} itemProp="name">
+                        {_mountProductName(product)}
+                    </h2>
+                    :
+                    <h3 className={styles["sonoma-title"]} itemProp="name">
+                        {_mountProductName(product)}
+                    </h3>
+                }
+
 
                 {
                     product.sku.seller.commertialOffer.AvailableQuantity ? <>
@@ -98,25 +95,25 @@ function CustomProductSummaryComponent({
                             <meta itemProp="highPrice" content="156" />
                             <meta itemProp="lowPrice" content="79.9" />
                             <div className={styles["offer-container"]}>
-                                    <div className={`${styles["oldprice-container"]} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
-                                        <Link
-                                            page="store.product"
-                                            params={{
-                                                slug: product && product.linkText,
-                                                id: product && product.productId,
-                                                __listName: listName,
-                                            }}
-                                            to={`/${product.linkText}/p`}
-                                            className={styles.oldprice}
-                                        >
-                                            De
-                                            <span className={styles["sonoma-currency"]}>
-                                                {formatCurrency(product.priceRange.listPrice.lowPrice)}
-                                            </span>
-                                            por
-                                        </Link>
-                                    </div>
+                                <div className={`${styles["oldprice-container"]} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
+                                    <Link
+                                        page="store.product"
+                                        params={{
+                                            slug: product && product.linkText,
+                                            id: product && product.productId,
+                                            __listName: listName,
+                                        }}
+                                        to={`/${product.linkText}/p`}
+                                        className={styles.oldprice}
+                                    >
+                                        De
+                                        <span className={styles["sonoma-currency"]}>
+                                            {formatCurrency(product.priceRange.listPrice.lowPrice)}
+                                        </span>
+                                        por
+                                    </Link>
                                 </div>
+                            </div>
                             <div className={styles["price-container"]}>
                                 <div className={styles["price-container-box"]}>
                                     <Link
@@ -273,6 +270,24 @@ function _mountSeal(seal) {
             </figure>
         )
     })
+}
+
+function _mountProductName(product) {
+    return (
+        <Link
+            page="store.product"
+            params={{
+                slug: product && product.linkText,
+                id: product && product.productId,
+                __listName: product.productName,
+            }}
+            to={`/${product.linkText}/p`}
+        >
+            <span className={styles["formatted-text"]}>
+                {product.productName}
+            </span>
+        </Link>
+    )
 }
 
 export default React.memo(CustomProductSummaryComponent)

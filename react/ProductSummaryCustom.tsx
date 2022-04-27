@@ -178,6 +178,7 @@ function ProductSummaryCustom({
                 children={children}
                 product={product}
                 listName={listName}
+                isSearchPage={true}
               />
             </Link>
           </section>

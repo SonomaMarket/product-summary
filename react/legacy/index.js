@@ -213,6 +213,7 @@ class ProductSummary extends Component {
         index={index}
         listName={listName}
         inViewRef={inViewRef}
+        isSearchPage={false}
       />
     )
   }
