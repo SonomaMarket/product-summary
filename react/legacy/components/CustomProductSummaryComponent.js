@@ -232,8 +232,8 @@ function getSeals(product) {
 
     return (
         <>
-            {seals.map(seal => _mountSeal(seal))}
-            {ratings.map(rating => _mountSeal(rating))}
+            {seals.map(seal => _mountSeal(seal, false))}
+            {ratings.map(rating => _mountSeal(rating, true))}
         </>
     )
 }
@@ -246,15 +246,15 @@ function getIsPreSale(product) {
     return product.properties?.filter(property => property.name === "Pré-venda")?.[0]?.values?.[0] === "Ativo"
 }
 
-function _mountSeal(seal) {
+function _mountSeal(seal, isRating) {
     return seal.specifications.map(seal => {
-        if (!premiacoesSRC[seal.name] && seal.name.length !== 2)
+        if (!premiacoesSRC[seal.name] && !isRating)
             return null;
 
         return (
             <figure className={styles.seals__item} key={seal.name}>
                 <i
-                    className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${seal.name.length !== 2
+                    className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${!isRating
                         ? premiacoesSRC[seal.name]
                         : premiacoesSRC["Pontuação"]
                         }`}
