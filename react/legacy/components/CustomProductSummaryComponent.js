@@ -182,7 +182,6 @@ function formatCurrency(value) {
 
 function getBoxPrice(product) {
     if (product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name) {
-        console.log(product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name);
         const discount = product.sku.sellers[0].commertialOffer.teasers[0].name.split("/")[1]
         const discountFormated = discount.replace(',', '.').replace(/[^\d.]/g, ''); //Regex tira todos os chars menos numeros ;P
         return product.priceRange.sellingPrice.lowPrice * (1 - discountFormated / 100)
