@@ -157,22 +157,6 @@ function CustomProductSummaryComponent({
                                 </div>
                             </div>
                         </div>
-                        <div className={styles["actions"]}>
-                            <Link
-                                page="store.product"
-                                params={{
-                                    slug: product && product.linkText,
-                                    id: product && product.productId,
-                                    __listName: listName,
-                                }}
-                                to={`/${product.linkText}/p`}
-                                className={styles["price"]}
-                            >
-                                <button className={styles["sonoma-button-buy"]}>
-                                    Comprar
-                                </button>
-                            </Link>
-                        </div>
                     </> : <p class={styles.shelf__indisponivel}>Esgotado</p>
                 }
             </div>
@@ -198,6 +182,7 @@ function formatCurrency(value) {
 
 function getBoxPrice(product) {
     if (product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name) {
+        console.log(product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name);
         const discount = product.sku.sellers[0].commertialOffer.teasers[0].name.split("/")[1]
         const discountFormated = discount.replace(',', '.').replace(/[^\d.]/g, ''); //Regex tira todos os chars menos numeros ;P
         return product.priceRange.sellingPrice.lowPrice * (1 - discountFormated / 100)
