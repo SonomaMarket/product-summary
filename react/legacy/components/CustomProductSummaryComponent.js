@@ -238,7 +238,7 @@ function _mountSeal(seal, isRating) {
         return (
             <figure className={styles.seals__item} key={seal.name}>
                 <i
-                    className={`sonoma-sonoma-io-1-x-sprites sonoma-sonoma-io-1-x-${!isRating
+                    className={`sonoma-sonoma-io-2-x-sprites sonoma-sonoma-io-2-x-${!isRating
                         ? premiacoesSRC[seal.name]
                         : premiacoesSRC["Pontuação"]
                         }`}
