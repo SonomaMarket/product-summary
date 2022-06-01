@@ -33,7 +33,6 @@ function CustomProductSummaryComponent({
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
-                            id: product && product.productId,
                             __listName: listName,
                         }}
                         to={`/${product.linkText}/p`} itemProp="url"
@@ -65,7 +64,6 @@ function CustomProductSummaryComponent({
                         page="store.product"
                         params={{
                             slug: product && product.linkText,
-                            id: product && product.productId,
                             __listName: listName,
                         }}
                         to={`/${product.linkText}/p`}
@@ -100,7 +98,6 @@ function CustomProductSummaryComponent({
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
-                                            id: product && product.productId,
                                             __listName: listName,
                                         }}
                                         to={`/${product.linkText}/p`}
@@ -122,7 +119,7 @@ function CustomProductSummaryComponent({
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
-                                            id: product && product.productId,
+                                            
                                             __listName: listName,
                                         }}
                                         to={`/${product.linkText}/p`}
@@ -141,7 +138,6 @@ function CustomProductSummaryComponent({
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
-                                            id: product && product.productId,
                                             __listName: listName,
                                         }}
                                         to={`/${product.linkText}/p`}
@@ -262,7 +258,6 @@ function _mountProductName(product) {
             page="store.product"
             params={{
                 slug: product && product.linkText,
-                id: product && product.productId,
                 __listName: product.productName,
             }}
             to={`/${product.linkText}/p`}
@@ -274,4 +269,4 @@ function _mountProductName(product) {
     )
 }
 
-export default React.memo(CustomProductSummaryComponent)
+export default React.memo(CustomProductSummaryComponent);

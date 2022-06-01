@@ -146,7 +146,6 @@ function ProductSummaryCustom({
         page: 'store.product',
         params: {
           slug: product?.linkText,
-          id: product?.productId,
           __listName: listName,
         },
         query,
