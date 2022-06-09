@@ -112,7 +112,7 @@ function CustomProductSummaryComponent({
                                 </div>
                             </div>
                             <div className={styles["price-container"]}>
-                                <div className={styles["price-container-box"]}>
+                                <div className={styles["price-container-box"]} hidden={haveMinAmountForBoxPrice(product)}>
                                     <Link
                                         title={product.productName}
                                         aria-label={product.productName}
@@ -263,10 +263,18 @@ function _mountProductName(product) {
             to={`/${product.linkText}/p`}
         >
             <span className={styles["formatted-text"]}>
-                {product.productName}
+                {product.productName.toLowerCase()}
             </span>
         </Link>
     )
+}
+
+function haveMinAmountForBoxPrice(product){
+    return product.sku.seller?.commertialOffer?.AvailableQuantity >= getBoxAmount(product);
+}
+
+function getBoxAmount(product) {
+    return product.sku.seller?.commertialOffer?.teasers?.[0]?.name.split("/")[0] || 0;
 }
 
 export default React.memo(CustomProductSummaryComponent);
