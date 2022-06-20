@@ -92,6 +92,9 @@ function CustomProductSummaryComponent({
                             <meta itemProp="priceCurrency" content="BRL" />
                             <meta itemProp="highPrice" content="156" />
                             <meta itemProp="lowPrice" content="79.9" />
+                            <div className={`${styles.discountHighlight} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
+                                {calculateDiscountHighlight(product)}
+                            </div>
                             <div className={styles["offer-container"]}>
                                 <div className={`${styles["oldprice-container"]} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
                                     <Link
@@ -275,6 +278,10 @@ function haveMinAmountForBoxPrice(product){
 
 function getBoxAmount(product) {
     return product.sku.seller?.commertialOffer?.teasers?.[0]?.name.split("/")[0] || 0;
+}
+
+function calculateDiscountHighlight(product){
+    return `${100 - (((product.priceRange.sellingPrice.lowPrice / product.priceRange.listPrice.highPrice) * 100).toFixed(0))}% OFF`
 }
 
 export default React.memo(CustomProductSummaryComponent);
