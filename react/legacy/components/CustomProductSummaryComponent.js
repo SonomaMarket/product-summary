@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import { Link } from 'vtex.render-runtime'
+import { canUseDOM, Link } from 'vtex.render-runtime'
 import styles from '../styles/custom-product-summary-component'
+import ExpressIcon from './ExpressIcon'
 
 function CustomProductSummaryComponent({
     product,
@@ -90,10 +91,18 @@ function CustomProductSummaryComponent({
                         <div itemProp="offers" itemScope="itemScope" itemType="http://schema.org/AggregateOffer" className={styles["prices"]}>
                             <meta itemProp="availability" content="https://schema.org/InStock" />
                             <meta itemProp="priceCurrency" content="BRL" />
-                            <meta itemProp="highPrice" content="156" />
-                            <meta itemProp="lowPrice" content="79.9" />
-                            <div className={`${styles.discountHighlight} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
-                                {calculateDiscountHighlight(product)}
+                            <meta itemProp="highPrice" content={product.priceRange.listPrice.highPrice} />
+                            <meta itemProp="lowPrice" content={product.priceRange.sellingPrice.lowPrice} />
+                            <div className={styles.highlightWrapper}>
+                                <div className={`${styles.discountHighlight}`} hidden={!doesProductHaveDiscount(product)}>
+                                    {calculateDiscountHighlight(product)}
+                                </div>
+                                {
+                                    canUseDOM && <div className={styles.expressDelivery} hidden={!isExpressDelivery(product)}>
+                                        <ExpressIcon color={'#85B074'} />
+                                        Entrega expressa
+                                    </div>
+                                }
                             </div>
                             <div className={styles["offer-container"]}>
                                 <div className={`${styles["oldprice-container"]} ${doesProductHaveDiscount(product) ? '' : styles["no-discount"]}`}>
@@ -122,7 +131,7 @@ function CustomProductSummaryComponent({
                                         page="store.product"
                                         params={{
                                             slug: product && product.linkText,
-                                            
+
                                             __listName: listName,
                                         }}
                                         to={`/${product.linkText}/p`}
@@ -156,7 +165,7 @@ function CustomProductSummaryComponent({
                                 </div>
                             </div>
                         </div>
-                    </> : <p class={styles.shelf__indisponivel}>Esgotado</p>
+                    </> : <p className={styles.shelf__indisponivel}>Esgotado</p>
                 }
             </div>
         </div>
@@ -222,7 +231,7 @@ function getSeals(product) {
 }
 
 function doesProductHaveDiscount(product) {
-    return (product.priceRange.listPrice.lowPrice > product.priceRange.sellingPrice.lowPrice)
+    return (product.priceRange.listPrice.lowPrice >= product.priceRange.sellingPrice.lowPrice * 1.05)
 }
 
 function getIsPreSale(product) {
@@ -272,7 +281,7 @@ function _mountProductName(product) {
     )
 }
 
-function haveMinAmountForBoxPrice(product){
+function haveMinAmountForBoxPrice(product) {
     return product.sku.seller?.commertialOffer?.AvailableQuantity >= getBoxAmount(product);
 }
 
@@ -280,8 +289,19 @@ function getBoxAmount(product) {
     return product.sku.seller?.commertialOffer?.teasers?.[0]?.name.split("/")[0] || 0;
 }
 
-function calculateDiscountHighlight(product){
+function calculateDiscountHighlight(product) {
     return `${100 - (((product.priceRange.sellingPrice.lowPrice / product.priceRange.listPrice.highPrice) * 100).toFixed(0))}% OFF`
+}
+
+function isExpressDelivery(product) {
+    const isFromSp = JSON.parse(localStorage.getItem('userAdress'))
+    if(!(isFromSp?.localidade === "São Paulo"))
+        return false
+
+    if(product.properties?.filter(property => property.name === "isExpress")?.[0]?.values?.[0] !== "Ativo")
+        return false
+
+    return true
 }
 
 export default React.memo(CustomProductSummaryComponent);
