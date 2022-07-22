@@ -13,6 +13,8 @@ function CustomProductSummaryComponent({
 }) {
     const [isHover, setIsHover] = useState(false);
 
+    console.log("Produto", product);
+
     return (
         <div
             className={styles.sonoma_shelf_item}
@@ -189,7 +191,8 @@ function formatCurrency(value) {
 }
 
 function getBoxPrice(product) {
-    if (product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name) {
+    if (product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name && 
+        product.sku.sellers?.[0]?.commertialOffer?.teasers?.[0]?.name.includes("/")) {
         const discount = product.sku.sellers[0].commertialOffer.teasers[0].name.split("/")[1]
         const discountFormated = discount.replace(',', '.').replace(/[^\d.]/g, ''); //Regex tira todos os chars menos numeros ;P
         return product.priceRange.sellingPrice.lowPrice * (1 - discountFormated / 100)
@@ -286,7 +289,7 @@ function haveMinAmountForBoxPrice(product) {
 }
 
 function getBoxAmount(product) {
-    return product.sku.seller?.commertialOffer?.teasers?.[0]?.name.split("/")[0] || 0;
+    return product.sku.seller?.commertialOffer?.teasers?.[0]?.name.split("/")?.[0] || 0;
 }
 
 function calculateDiscountHighlight(product) {
