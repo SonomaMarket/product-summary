@@ -13,8 +13,6 @@ function CustomProductSummaryComponent({
 }) {
     const [isHover, setIsHover] = useState(false);
 
-    console.log("Produto", product);
-
     return (
         <div
             className={styles.sonoma_shelf_item}
