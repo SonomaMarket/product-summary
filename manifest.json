@@ -1,7 +1,7 @@
 {
   "vendor": "sonoma",
   "name": "product-summary",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "title": "Product Summary",
   "description": "Product summary component",
   "defaultLocale": "pt-BR",

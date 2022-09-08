@@ -213,7 +213,7 @@ const premiacoesSRC = {
     bestSellers: "sprites-best-seller",
     organico: "sprites-organico",
     natural: "sprites-natural",
-    "Caixa Mista": "sprites-mista",
+    /* "Caixa Mista": "sprites-mista", */
     Pontuação: "sprites-medal"
 };
 
