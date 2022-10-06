@@ -240,8 +240,8 @@ function getIsPreSale(product) {
     return product.properties?.filter(property => property.name === "Pré-venda")?.[0]?.values?.[0] === "Ativo"
 }
 
-function _mountSeal(seal, isRating) {
-    return seal.specifications.map(seal => {
+function _mountSeal(_seal, isRating) {
+    return _seal.specifications.map(seal => {
         if (!premiacoesSRC[seal.name] && !isRating)
             return null;
 
@@ -258,7 +258,7 @@ function _mountSeal(seal, isRating) {
                         {seal.values?.[0] !== "Ativo" && seal.values[0]}
                     </p>
                     <p className={styles.seals__avaliator}>
-                        {seal.values?.[0] !== "Ativo" && seal.name}
+                        {seal.values?.[0] !== "Ativo" && isRating && seal.name}
                     </p>
                 </figcaption>
             </figure>
