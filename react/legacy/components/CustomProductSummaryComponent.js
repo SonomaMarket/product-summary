@@ -124,7 +124,7 @@ function CustomProductSummaryComponent({
                                 </div>
                             </div>
                             <div className={styles["price-container"]}>
-                                <div className={styles["price-container-box"]} hidden={haveMinAmountForBoxPrice(product)}>
+                                <div className={styles["price-container-box"]} hidden={!haveMinAmountForBoxPrice(product)}>
                                     <Link
                                         title={product.productName}
                                         aria-label={product.productName}
