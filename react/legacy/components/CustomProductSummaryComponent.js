@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { canUseDOM, Link } from 'vtex.render-runtime'
 import styles from '../styles/custom-product-summary-component'
 import ExpressIcon from './ExpressIcon'
@@ -12,10 +12,20 @@ function CustomProductSummaryComponent({
     isSearchPage
 }) {
     const [isHover, setIsHover] = useState(false);
+    const [isBlackfriday, setIsBlackfriday] = useState(false)
+
+    useEffect(() => {
+        if(window?.location?.pathname === '/blackfriday')
+            setIsBlackfriday(true)
+    },[window.location])
 
     return (
         <div
-            className={styles.sonoma_shelf_item}
+            className={`${styles.sonoma_shelf_item} ${
+                isBlackfriday ? 
+                styles.blackfriday :
+                ""
+            }`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             ref={inViewRef}
@@ -213,12 +223,30 @@ const premiacoesSRC = {
     bestSellers: "sprites-best-seller",
     organico: "sprites-organico",
     natural: "sprites-natural",
+    blackfriday: "sprites-blackfriday",
     /* "Caixa Mista": "sprites-mista", */
     Pontuação: "sprites-medal"
 };
 
+function getClusterSeals(product) {
+    const productClusterList = product.productClusters.map(cluster => cluster.name)
+    return productClusterList.map(clusterName => {
+        if(clusterName.includes("selos=[") && clusterName.includes("blackfriday"))
+            return {
+                name: "ClusterSeal",
+                specifications: [
+                    {
+                        name: "blackfriday",
+                        values: ['Ativo']
+                    }
+                ]
+            };
+    }).filter(seal => seal?.specifications)
+}
+
 function getSeals(product) {
-    const seals = product.specificationGroups.filter(property => property.name === "Selos")
+    const clusterSeals = getClusterSeals(product)
+    const seals = [...clusterSeals, ...product.specificationGroups.filter(property => property.name === "Selos")]
     const ratings = product.specificationGroups.filter(property => property.name === "Pontuação")
 
     if (!seals.length && !ratings.length)
