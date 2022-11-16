@@ -39,6 +39,14 @@ function CustomProductSummaryComponent({
                 <div className={styles.preSaleFlag} hidden={!getIsPreSale(product)}>
                     PRÉ-VENDA
                 </div>
+                {
+                product.sku.seller.commertialOffer.AvailableQuantity ? 
+                <div className={styles.highlightWrapper}>
+                    <div className={`${styles.discountHighlight}`} hidden={!doesProductHaveDiscount(product)}>
+                        {`ATÉ ${calculateDiscountHighlight(product)}`}
+                    </div>
+                </div> : null
+                }
                 <div className={styles["sonoma-image"]} itemProp="image">
                     <Link
                         page="store.product"
@@ -104,9 +112,6 @@ function CustomProductSummaryComponent({
                             <meta itemProp="highPrice" content={product.priceRange.listPrice.highPrice} />
                             <meta itemProp="lowPrice" content={product.priceRange.sellingPrice.lowPrice} />
                             <div className={styles.highlightWrapper}>
-                                <div className={`${styles.discountHighlight}`} hidden={!doesProductHaveDiscount(product)}>
-                                    {calculateDiscountHighlight(product)}
-                                </div>
                                 {
                                     canUseDOM && <div className={styles.expressDelivery} hidden={!isExpressDelivery(product)}>
                                         <ExpressIcon color={'#85B074'} />
@@ -320,7 +325,8 @@ function getBoxAmount(product) {
 }
 
 function calculateDiscountHighlight(product) {
-    return `${100 - (((product.priceRange.sellingPrice.lowPrice / product.priceRange.listPrice.highPrice) * 100).toFixed(0))}% OFF`
+    const boxPrice = getBoxPrice(product)
+    return `${100 - ((((boxPrice ? boxPrice : product.priceRange.sellingPrice.lowPrice) / product.priceRange.listPrice.highPrice) * 100).toFixed(0))}% OFF`
 }
 
 function isExpressDelivery(product) {
