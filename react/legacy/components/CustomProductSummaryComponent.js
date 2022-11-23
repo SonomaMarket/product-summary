@@ -132,7 +132,7 @@ function CustomProductSummaryComponent({
                                     >
                                         De
                                         <span className={styles["sonoma-currency"]}>
-                                            {formatCurrency(product.priceRange.listPrice.lowPrice)}
+                                            {getPrecoDe(product) ? formatCurrency(getPrecoDe(product)) : formatCurrency(product.priceRange.listPrice.lowPrice)}
                                         </span>
                                         por
                                     </Link>
@@ -186,6 +186,14 @@ function CustomProductSummaryComponent({
         </div>
     )
 }
+
+function getPrecoDe(product) {
+    if (
+      product.properties.filter((property) => property.name === "preco_de")[0]?.values?.[0]
+    )
+      return Number(product.properties.filter((property) => property.name === "preco_de")[0].values[0].replace(".","").replace(",","."));
+    return null;
+  }
 
 
 function getRegion(product) {
@@ -266,6 +274,8 @@ function getSeals(product) {
 }
 
 function doesProductHaveDiscount(product) {
+    if(getPrecoDe(product))
+        return true
     return (product.priceRange.listPrice.lowPrice >= product.priceRange.sellingPrice.lowPrice * 1.05)
 }
 
@@ -325,8 +335,10 @@ function getBoxAmount(product) {
 }
 
 function calculateDiscountHighlight(product) {
-    const boxPrice = getBoxPrice(product)
-    return `${100 - ((((boxPrice ? boxPrice : product.priceRange.sellingPrice.lowPrice) / product.priceRange.listPrice.highPrice) * 100).toFixed(0))}% OFF`
+    const boxPrice = getBoxPrice(product);
+    const customPrecoDe = getPrecoDe(product)
+    return `${100 - ((((boxPrice ? boxPrice : product.priceRange.sellingPrice.lowPrice) / 
+    (customPrecoDe ? customPrecoDe : product.priceRange.listPrice.highPrice)) * 100).toFixed(0))}% OFF`
 }
 
 function isExpressDelivery(product) {
